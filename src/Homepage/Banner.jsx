@@ -33,7 +33,7 @@ const slides = [
 
 const Banner = () => {
   return (
-    <div className="relative w-full h-[40vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] xl:h-[75vh] overflow-hidden">
+    <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] md:aspect-[24/9] lg:aspect-[25/9] xl:aspect-[28/9] overflow-hidden">
       <Swiper
         modules={[Autoplay, EffectFade, Parallax]}
         autoplay={{
@@ -50,21 +50,21 @@ const Banner = () => {
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <div 
-              className="absolute inset-0 w-full h-full"
+              className="relative w-full h-full"
               data-swiper-parallax={`${slide.parallaxSpeed}%`}
             >
               <img
                 src={slide.img}
-                className="absolute inset-0 w-full h-full object-cover"
                 alt={`Banner ${index + 1}`}
-                data-swiper-parallax-scale="1.1"
-                loading="eager"
+                className="absolute inset-0 w-full h-full object-cover object-center"
+                data-swiper-parallax-scale="1.05"
+                width="1920"
+                height="800"
+                loading="lazy"
               />
-              <div className="absolute inset-0"></div>
-              
-              {/* Responsive Text Content */}
-           <div className="absolute left-4 sm:left-8 md:left-16 lg:left-24 top-1/2 transform -translate-y-1/2 z-10 w-[90%] max-w-sm sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
 
+              {/* Overlay Gradient Text Box */}
+              <div className="absolute left-4 sm:left-8 md:left-16 lg:left-24 top-1/2 transform -translate-y-1/2 z-10 w-[90%] max-w-sm sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
                 <div className="relative p-4 sm:p-6 md:p-8 rounded-xl bg-gradient-to-r from-green-600/90 to-green-800/90 backdrop-blur-sm shadow-2xl">
                   <div className="absolute -inset-1 bg-gradient-to-r from-green-400/30 to-green-600/30 rounded-xl blur-sm"></div>
                   <h2 
@@ -92,7 +92,7 @@ const Banner = () => {
           </SwiperSlide>
         ))}
 
-        {/* Auto-slide progress indicator */}
+        {/* Progress bar */}
         <div className="absolute bottom-0 left-0 right-0 h-1 z-10">
           <div className="swiper-progress h-full bg-white origin-left"></div>
         </div>

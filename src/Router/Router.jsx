@@ -7,12 +7,13 @@ import Home from "../Homepage/Home";
 import Login from "../Authentication/Login";
 import AuthLayout from "../Authentication/AuthLayout";
 import Register from "../Authentication/Register";
+import Loader from "../Homepage/Loader";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout></RootLayout>,
+    element: <Loader><RootLayout></RootLayout></Loader>,
     children:[
         {
            index:true,
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
 
   {
     path:'/',
-    element:<AuthLayout></AuthLayout>,
+    element:<Loader><AuthLayout></AuthLayout></Loader>,
     children:[
       {
         path:'/login',
