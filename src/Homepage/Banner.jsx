@@ -14,7 +14,7 @@ const slides = [
   { 
     img: img1, 
     parallaxSpeed: -20,
-    title: "Rescue Food, Replate Hope",
+    title: "Rescue Food, RePlate Hope",
     subtitle: "Join our mission to reduce food waste"
   },
   { 
