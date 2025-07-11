@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router'; // ✅ updated import
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
+import { AuthContext } from './AuthContext';
+import Swal from 'sweetalert2';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +12,9 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { signInUser, googleSignIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,14 +45,53 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      setIsLoading(true);
-      setTimeout(() => {
-        console.log('Login data:', formData);
-        setIsLoading(false);
-      }, 1500);
+    if (!validate()) return;
+
+    setIsLoading(true);
+    try {
+      await signInUser(formData.email, formData.password);
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Successful',
+        text: 'Welcome back!',
+        timer: 2000,
+        showConfirmButton: false
+      });
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: error.message
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    try {
+      await googleSignIn();
+      Swal.fire({
+        icon: 'success',
+        title: 'Google Login Successful',
+        timer: 2000,
+        showConfirmButton: false
+      });
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Google Login Failed',
+        text: error.message
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -72,7 +116,6 @@ const Login = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="john@example.com"
                 className={`w-full pl-10 pr-4 py-2 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 disabled={isLoading}
               />
@@ -110,32 +153,28 @@ const Login = () => {
               </button>
             </div>
             {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-            <div className="flex justify-end">
-              <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
-                Forgot password?
-              </Link>
-            </div>
           </div>
 
-          {/* Submit Button - DaisyUI */}
+          {/* Submit Button */}
           <button
             type="submit"
             className={`btn btn-primary w-full ${isLoading ? 'loading' : ''}`}
             disabled={isLoading}
           >
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? ' Logging in...' : 'Login'}
           </button>
 
-          {/* Social Login Options */}
+          {/* Social Login Divider */}
           <div className="flex items-center my-6">
             <div className="flex-1 border-t border-gray-300"></div>
             <span className="px-3 text-gray-500">OR</span>
             <div className="flex-1 border-t border-gray-300"></div>
           </div>
 
-          {/* Google Button - DaisyUI */}
+          {/* Google Login Button */}
           <button
             type="button"
+            onClick={handleGoogleLogin}
             className="btn btn-outline w-full gap-2"
             disabled={isLoading}
           >
@@ -145,7 +184,7 @@ const Login = () => {
 
           {/* Register Link */}
           <div className="text-center text-gray-600">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link to="/register" className="text-blue-600 hover:underline font-medium">
               Register here
             </Link>

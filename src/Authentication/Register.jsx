@@ -1,6 +1,12 @@
-import React, { useState, useRef } from 'react';
-import { Link } from 'react-router';
+import React, { useState, useRef, useContext } from 'react';
+import { Link, useNavigate } from 'react-router';
 import { FaUser, FaEnvelope, FaLock, FaCamera, FaEye, FaEyeSlash } from 'react-icons/fa';
+import Swal from 'sweetalert2';
+import { AuthContext } from './AuthContext';
+import { updateProfile } from 'firebase/auth';
+// ImgBB API key - replace with your actual API key
+const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY;
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +18,7 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [preview, setPreview] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleChange = (e) => {
@@ -56,19 +63,69 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      // Handle form submission (e.g., API call)
-      console.log('Form submitted:', formData);
-      // Reset form after submission
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        photo: null
+  const uploadImageToImgBB = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+        method: 'POST',
+        body: formData
       });
-      setPreview('');
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        return result.data.url;
+      } else {
+        throw new Error(result.error?.message || 'Image upload failed');
+      }
+    } catch (error) {
+      console.error('Error uploading image to ImgBB:', error);
+      throw error;
+    }
+  };
+
+  const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    setLoading(true);
+
+    try {
+      // Create user account
+      const result = await createUser(formData.email, formData.password);
+
+      // Upload image to ImgBB
+      const photoURL = await uploadImageToImgBB(formData.photo);
+
+      // Update user profile with name and photo URL
+      await updateProfile(result.user, {
+        displayName: formData.name,
+        photoURL: photoURL
+      });
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Registration Successful!',
+        text: 'Welcome to RePlate!',
+        timer: 2000,
+        showConfirmButton: false
+      });
+
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Registration Failed',
+        text: error.message
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -124,7 +181,7 @@ const Register = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="John Doe"
+                placeholder=""
                 className={`w-full pl-10 pr-4 py-2 rounded-lg border ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
               />
             </div>
@@ -143,7 +200,7 @@ const Register = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="john@example.com"
+                placeholder=""
                 className={`w-full pl-10 pr-4 py-2 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
               />
             </div>
@@ -163,6 +220,7 @@ const Register = () => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="••••••••"
+                pattern="^(?=.*[a-z])(?=.*[A-Z]).{6,}$"
                 className={`w-full pl-10 pr-10 py-2 rounded-lg border ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
               />
               <button
@@ -183,9 +241,10 @@ const Register = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition duration-300"
+            disabled={loading}
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-4 rounded-lg font-semibold shadow-md hover:bg-gradient-to-r hover:from-green-600 hover:to-emerald-700 hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Register Now
+            {loading ? 'Creating Account...' : 'Register Now'}
           </button>
 
           {/* Login Link */}
