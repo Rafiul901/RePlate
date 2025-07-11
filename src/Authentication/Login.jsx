@@ -1,10 +1,14 @@
 import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router'; // ✅ updated import
+import { Link, useLocation, useNavigate } from 'react-router'; // ✅ corrected import
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
 import { AuthContext } from './AuthContext';
 import Swal from 'sweetalert2';
 
 const Login = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -14,7 +18,6 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { signInUser, googleSignIn } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,7 +62,7 @@ const Login = () => {
         timer: 2000,
         showConfirmButton: false
       });
-      navigate('/');
+      navigate(from, { replace: true }); // ✅ correct redirection after login
     } catch (error) {
       console.error(error);
       Swal.fire({
@@ -82,7 +85,7 @@ const Login = () => {
         timer: 2000,
         showConfirmButton: false
       });
-      navigate('/');
+      navigate(from, { replace: true }); // ✅ correct redirection after Google login
     } catch (error) {
       console.error(error);
       Swal.fire({

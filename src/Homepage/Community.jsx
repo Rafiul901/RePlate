@@ -11,7 +11,7 @@ const Community = () => {
       quote: "RePlate helped us redirect 200kg of surplus food weekly to shelters. Our staff now takes pride in our sustainability efforts.",
       author: "Maria Gonzalez",
       role: "Manager, Fresh Bites Cafe",
-      image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
+      image: "https://i.ibb.co/N696yjh0/photo-1555396273-367ea4eb4db5.jpg",
       stats: "1,200+ meals donated"
     },
     {
@@ -19,7 +19,7 @@ const Community = () => {
       quote: "As a small charity, RePlate has been a game-changer. We now reliably serve 150 extra meals every week to those in need.",
       author: "David Chen",
       role: "Director, Hope Kitchen",
-      image: "https://plus.unsplash.com/premium_photo-1683140538884-07fb31428ca6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      image: "https://i.ibb.co/6JVKsHqC/premium-photo-1683140538884-07fb31428ca6.jpg",
       stats: "3,500+ people served"
     },
     {
@@ -27,7 +27,7 @@ const Community = () => {
       quote: "The platform made food recovery so simple that we expanded our donations to three new neighborhoods this year.",
       author: "Sarah Johnson",
       role: "Owner, Daily Harvest Bakery",
-      image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80",
+      image: "https://i.ibb.co/qFPWJx7C/photo-1546069901-ba9599a7e63c.jpg",
       stats: "85% waste reduction"
     }
   ];

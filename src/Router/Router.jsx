@@ -8,6 +8,8 @@ import Login from "../Authentication/Login";
 import AuthLayout from "../Authentication/AuthLayout";
 import Register from "../Authentication/Register";
 import Loader from "../Homepage/Loader";
+import PrivateRoute from "../Authentication/PrivateRoute";
+import AllDonation from "../Homepage/AllDonation";
 
 
 const router = createBrowserRouter([
@@ -19,6 +21,10 @@ const router = createBrowserRouter([
            index:true,
            element:<Home></Home> 
         },
+        {
+          path:'/allDonation',
+          element:<PrivateRoute><AllDonation></AllDonation></PrivateRoute>
+        }
 
        
     ]

@@ -89,11 +89,11 @@ const Navbar = () => {
         </div>
 
         {user ? (
-          <button onClick={handleLogOut} className='btn border-2 border-blue-500 bg-gradient-to-r from-cyan-400 to-blue-600 text-white hover:from-red-500 hover:to-red-700'>
+          <button onClick={handleLogOut} className='btn border-2 border-blue-500 bg-gradient-to-r from-cyan-400 to-blue-600 text-white hover:from-green-500 hover:to-green-700'>
             LogOut
           </button>
         ) : (
-                    <Link to='/login' className="btn border-2 border-blue-500 bg-gradient-to-r from-green-400 to-green-600 text-white hover:from-green-500 hover:to-green-700">
+                    <Link to='/login' className="btn border-2 border-blue-500 bg-gradient-to-r from-green-400 to-green-600 text-white hover:from-blue-500 hover:to-blue-700">
             Login
           </Link>
         )}
