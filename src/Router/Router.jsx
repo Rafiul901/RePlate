@@ -10,6 +10,7 @@ import Register from "../Authentication/Register";
 import Loader from "../Homepage/Loader";
 import PrivateRoute from "../Authentication/PrivateRoute";
 import AllDonation from "../Homepage/AllDonation";
+import Error from "../Homepage/Error";
 
 
 const router = createBrowserRouter([
@@ -46,6 +47,13 @@ const router = createBrowserRouter([
         element:<Register></Register>
       }
     ]
+  }
+  ,
+  {
+      
+    path:'*',
+    element:<Error></Error>
+  
   }
 ]);
 
