@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 
 const DonationCard = ({ donation }) => {
   const { 
@@ -14,6 +15,8 @@ const DonationCard = ({ donation }) => {
     pickup_time,
     
   } = donation;
+  const navigate = useNavigate();
+
 
   // Status color mapping
   const statusColors = {
@@ -98,9 +101,12 @@ const DonationCard = ({ donation }) => {
                   {quantity_portions} meals
                 </span>
               </div>
-              <button className="text-xs btn px-3 py-1.5 bg-gradient-to-br from-lime-500 to-amber-500 text-white rounded-lg font-bold hover:shadow-[0_0_8px_rgba(163,230,53,0.6)] transition-all whitespace-nowrap">
-                Details
-              </button>
+             <button 
+  onClick={() => navigate(`/donations/${donation._id}`)}
+  className="text-xs btn px-3 py-1.5 bg-gradient-to-br from-lime-500 to-amber-500 text-white rounded-lg font-bold hover:shadow-[0_0_8px_rgba(163,230,53,0.6)] transition-all whitespace-nowrap"
+>
+  Details
+</button>
             </div>
           </div>
         </div>

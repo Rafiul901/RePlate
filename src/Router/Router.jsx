@@ -11,6 +11,7 @@ import Loader from "../Homepage/Loader";
 import PrivateRoute from "../Authentication/PrivateRoute";
 import AllDonation from "../Homepage/AllDonation";
 import Error from "../Homepage/Error";
+import DonationDetails from "../RootLayout/DonationDetails";
 
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
           path:'/allDonation',
           element:<AllDonation></AllDonation>,
           loader: ()=> fetch('http://localhost:3000/donations')
+        },
+        {
+          path:'/donations/:id',
+          element:<DonationDetails></DonationDetails>
         }
 
        

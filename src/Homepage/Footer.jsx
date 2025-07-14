@@ -6,7 +6,7 @@ import yt from '../assets/download.png';
 
 const Footer = () => {
     return (
-       <footer className="footer sm:footer-horizontal bg-neutral text-neutral-content p-10 mt-10">
+       <footer className="footer sm:footer-horizontal bg-cyan-950 text-neutral-content p-10 mt-10">
             <aside>
                 <img className='w-16 h-16 rounded-xl' src={logo} alt="" />
                 <p>
