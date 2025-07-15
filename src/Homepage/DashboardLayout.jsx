@@ -71,7 +71,7 @@ const SidebarItem = ({ icon, text, expanded, to, onClick }) => {
       <NavLink 
         to={to}
         className={({ isActive }) => 
-          `${baseClasses} ${isActive ? 'bg-cyan-700 font-medium' : ''}`
+          `${baseClasses} ${isActive ? 'bg-cyan-400 font-medium' : ''}`
         }
       >
         <div className="flex items-center">

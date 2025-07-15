@@ -15,6 +15,10 @@ import DonationDetails from "../RootLayout/DonationDetails";
 import DashboardLayout from "../Homepage/DashboardLayout";
 import ProfilePage from "../Homepage/ProfilePage";
 
+import PaymentSuccess from "../Homepage/PaymentSuccess";
+import PaymentCancel from "../Homepage/PaymentCancel";
+import Payment from "../Homepage/Payment";
+
 
 const router = createBrowserRouter([
   {
@@ -41,7 +45,19 @@ const router = createBrowserRouter([
             {
               path:'profile',
               element:<ProfilePage></ProfilePage>
-            }
+            },
+            {
+              path:'request',
+              element:<Payment></Payment>
+            },
+            {
+              path:'payment-success',
+              element:<PaymentSuccess></PaymentSuccess>
+            },
+            {
+              path:'payment-cancel',
+              element:<PaymentCancel></PaymentCancel>
+            },
           ]
         },
        
