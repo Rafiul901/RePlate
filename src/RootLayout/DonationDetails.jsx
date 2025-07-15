@@ -185,7 +185,7 @@ const DonationDetails = () => {
             <InfoBlock icon={<MdOutlineRestaurant />} label="Restaurant" value={donation.restaurant} />
             <InfoBlock icon={<FaMapMarkerAlt />} label="Location" value={donation.location} />
             <InfoBlock icon={<MdLocalDining />} label="Quantity" value={`${donation.quantity_kg} kg (${donation.quantity_portions} meals)`} />
-            <InfoBlock icon={<FaCalendarAlt />} label="Pickup Time" value={formatDate(donation.pickup_time)} />
+            <InfoBlock icon={<FaCalendarAlt />} label="Pickup Time" value={donation.pickup_time} />
           </div>
 
           {donation.charity && (

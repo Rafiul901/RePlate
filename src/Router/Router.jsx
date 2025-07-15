@@ -12,6 +12,8 @@ import PrivateRoute from "../Authentication/PrivateRoute";
 import AllDonation from "../Homepage/AllDonation";
 import Error from "../Homepage/Error";
 import DonationDetails from "../RootLayout/DonationDetails";
+import DashboardLayout from "../Homepage/DashboardLayout";
+import ProfilePage from "../Homepage/ProfilePage";
 
 
 const router = createBrowserRouter([
@@ -31,7 +33,18 @@ const router = createBrowserRouter([
         {
           path:'/donations/:id',
           element:<DonationDetails></DonationDetails>
-        }
+        },
+        {
+          path:'/dashboard',
+          element:<DashboardLayout></DashboardLayout>,
+          children:[
+            {
+              path:'profile',
+              element:<ProfilePage></ProfilePage>
+            }
+          ]
+        },
+       
 
        
     ]

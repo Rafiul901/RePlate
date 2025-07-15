@@ -20,7 +20,7 @@ const FeaturedDonations = () => {
   }, []);
 
   return (
-    <section className="max-w-7xl mx-auto px-5 py-12">
+    <section className="max-w-7xl mx-auto px-5 py-12 ">
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold text-green-900 mb-3">🌟 Featured Donations</h2>
         <p className="text-gray-600 max-w-2xl mx-auto">
