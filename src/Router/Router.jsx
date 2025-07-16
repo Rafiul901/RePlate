@@ -18,6 +18,8 @@ import ProfilePage from "../Homepage/ProfilePage";
 import PaymentSuccess from "../Homepage/PaymentSuccess";
 import PaymentCancel from "../Homepage/PaymentCancel";
 import Payment from "../Homepage/Payment";
+import Favorites from "../Homepage/Favorites";
+import MyReviews from "../Homepage/MyReviews";
 
 
 const router = createBrowserRouter([
@@ -57,6 +59,14 @@ const router = createBrowserRouter([
             {
               path:'payment-cancel',
               element:<PaymentCancel></PaymentCancel>
+            },
+            {
+              path:'favorites',
+              element:<Favorites></Favorites>
+            },
+            {
+              path:'reviews',
+              element:<MyReviews></MyReviews>
             },
           ]
         },

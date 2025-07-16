@@ -14,7 +14,7 @@ import { AuthContext } from '../Authentication/AuthContext';
 const DonationDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext); // Get user from AuthContext
+  const { user } = useContext(AuthContext);
   const [donation, setDonation] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -23,6 +23,7 @@ const DonationDetails = () => {
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
 
   const statusColors = {
     'Available': 'from-lime-400 to-yellow-400',
@@ -33,10 +34,11 @@ const DonationDetails = () => {
   const fetchDonation = async () => {
     try {
       const res = await fetch(`http://localhost:3000/donations/${id}`);
-      if (!res.ok) throw new Error('Failed to fetch');
+      if (!res.ok) throw new Error('Failed to fetch donation');
       const data = await res.json();
       setDonation(data);
     } catch (err) {
+      console.error('Error fetching donation:', err);
       Swal.fire('Error', 'Could not load donation details.', 'error');
     }
   };
@@ -53,6 +55,21 @@ const DonationDetails = () => {
     }
   };
 
+  const checkIfFavorite = async () => {
+    if (!user?.email) return;
+    
+    try {
+      const res = await fetch(`http://localhost:3000/favorites/${user.email}`);
+      if (res.ok) {
+        const favorites = await res.json();
+        const isFav = favorites.some(fav => fav.donationId === id);
+        setIsFavorite(isFav);
+      }
+    } catch (err) {
+      console.error('Error checking favorite status:', err);
+    }
+  };
+
   const fetchData = async () => {
     setIsLoading(true);
     await Promise.all([fetchDonation(), fetchReviews()]);
@@ -60,70 +77,134 @@ const DonationDetails = () => {
   };
 
   useEffect(() => {
-    if (id) fetchData();
-  }, [id]);
+    if (id) {
+      fetchData();
+      checkIfFavorite();
+    }
+  }, [id, user?.email]);
 
   const handleFavoriteToggle = async () => {
+    if (!user?.email) {
+      Swal.fire('Error', 'Please log in to add favorites.', 'error');
+      return;
+    }
+    
+    setFavoriteLoading(true);
+    
     try {
-      const userId = user?.uid || user?.id || "anonymous"; // Use actual user ID
+      const userId = user.email;
+      
       if (isFavorite) {
-        await fetch(`http://localhost:3000/favorites/${userId}/${id}`, {
+        const res = await fetch(`http://localhost:3000/favorites/${userId}/${id}`, {
           method: 'DELETE'
         });
+        if (!res.ok) throw new Error('Failed to remove from favorites');
+        
+        setIsFavorite(false);
+        Swal.fire({
+          title: 'Removed!',
+          text: 'Donation removed from favorites.',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
       } else {
-        await fetch(`http://localhost:3000/favorites`, {
+        const res = await fetch(`http://localhost:3000/favorites`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId, donationId: id })
         });
+        if (!res.ok) throw new Error('Failed to add to favorites');
+        
+        setIsFavorite(true);
+        Swal.fire({
+          title: 'Added!',
+          text: 'Donation added to favorites.',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
       }
-      setIsFavorite(!isFavorite);
     } catch (err) {
-      Swal.fire('Error', 'Failed to toggle favorite.', 'error');
+      console.error('Error toggling favorite:', err);
+      Swal.fire('Error', 'Failed to toggle favorite. Please try again.', 'error');
+    } finally {
+      setFavoriteLoading(false);
     }
   };
 
   const confirmRequest = async () => {
+    if (!user?.email) {
+      Swal.fire('Error', 'Please log in to request donations.', 'error');
+      return;
+    }
+    
     try {
-      const requesterId = user?.uid || user?.id || "anonymous"; // Use actual user ID
-      const pickupTime = new Date().toISOString(); // Replace with actual value if needed
+      const requesterId = user.email;
+      const pickupTime = new Date().toISOString();
       const res = await fetch(`http://localhost:3000/donations/${id}/request`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ requesterId, pickupTime })
       });
-      if (!res.ok) throw new Error();
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Failed to request donation');
+      }
+      
       Swal.fire('Success!', 'Donation requested successfully.', 'success');
       setShowRequestModal(false);
-      fetchDonation(); // Only need to fetch donation for status update
+      fetchDonation(); // Refresh donation status
     } catch (err) {
-      Swal.fire('Error', 'Could not request donation.', 'error');
+      console.error('Error requesting donation:', err);
+      Swal.fire('Error', err.message || 'Could not request donation. Please try again.', 'error');
     }
   };
 
   const submitReview = async () => {
+    if (!user?.email) {
+      Swal.fire('Error', 'Please log in to submit reviews.', 'error');
+      return;
+    }
+    
+    if (rating === 0) {
+      Swal.fire('Error', 'Please select a rating.', 'error');
+      return;
+    }
+    
     try {
-      const userId = user?.uid || user?.id || "anonymous"; // Use actual user ID
-      const userName = user?.displayName || user?.name || user?.email || "Anonymous"; // Get user name
+      const userId = user.email;
+      const userName = user?.displayName || user?.name || user?.email || "Anonymous";
       const res = await fetch(`http://localhost:3000/donations/${id}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, userName, rating, comment: reviewText })
       });
-      if (!res.ok) throw new Error();
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Failed to submit review');
+      }
+      
       Swal.fire('Thank you!', 'Your review has been submitted.', 'success');
       setShowReviewModal(false);
       setRating(0);
       setReviewText('');
-      fetchReviews(); // Fetch reviews to show the new one
+      fetchReviews(); // Refresh reviews
     } catch (err) {
-      Swal.fire('Error', 'Could not submit review.', 'error');
+      console.error('Error submitting review:', err);
+      Swal.fire('Error', err.message || 'Could not submit review. Please try again.', 'error');
     }
   };
 
   const formatDate = (str) => {
     if (!str) return 'Not specified';
-    return new Date(str).toLocaleString();
+    try {
+      return new Date(str).toLocaleString();
+    } catch (err) {
+      return 'Invalid date';
+    }
   };
 
   if (isLoading) {
@@ -138,9 +219,10 @@ const DonationDetails = () => {
     return (
       <div className="text-center py-20">
         <h2 className="text-2xl font-bold text-gray-800">Donation not found</h2>
+        <p className="text-gray-600 mt-2">The donation you're looking for doesn't exist or has been removed.</p>
         <button
           onClick={() => navigate('/donations')}
-          className="mt-4 px-6 py-2 bg-gradient-to-br from-lime-500 to-amber-500 text-white rounded-lg font-bold"
+          className="mt-4 px-6 py-2 bg-gradient-to-br from-lime-500 to-amber-500 text-white rounded-lg font-bold hover:shadow-lg transition-shadow"
         >
           Browse Donations
         </button>
@@ -154,7 +236,7 @@ const DonationDetails = () => {
       <div className="flex gap-2 text-sm text-green-800 mb-6">
         <button onClick={() => navigate('/')} className="hover:underline">Home</button> /
         <button onClick={() => navigate('/donations')} className="hover:underline">Donations</button> /
-        <span>{donation.title}</span>
+        <span className="text-gray-600">{donation.title}</span>
       </div>
 
       {/* Top Content */}
@@ -164,15 +246,20 @@ const DonationDetails = () => {
             src={donation.image}
             alt={donation.title}
             className="rounded-xl shadow-xl border-2 border-cyan-300 w-full h-96 object-cover"
-            onError={(e) => e.target.src = "https://via.placeholder.com/600x400"}
+            onError={(e) => e.target.src = "https://via.placeholder.com/600x400?text=No+Image"}
           />
           <button
             onClick={handleFavoriteToggle}
-            className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md"
+            disabled={favoriteLoading}
+            className={`absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow ${favoriteLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {isFavorite ? <FaHeart className="text-red-500 text-xl" /> : <FaRegHeart className="text-gray-600 text-xl" />}
+            {favoriteLoading ? (
+              <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-red-500"></div>
+            ) : (
+              isFavorite ? <FaHeart className="text-red-500 text-xl" /> : <FaRegHeart className="text-gray-600 text-xl" />
+            )}
           </button>
-          <div className={`absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-bold text-green-900 bg-gradient-to-br ${statusColors[donation.status]}`}>
+          <div className={`absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-bold text-green-900 bg-gradient-to-br ${statusColors[donation.status] || 'from-gray-400 to-gray-500'}`}>
             {donation.status}
           </div>
         </div>
@@ -182,28 +269,30 @@ const DonationDetails = () => {
           <p className="text-green-800 mb-4">{donation.description}</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <InfoBlock icon={<MdOutlineRestaurant />} label="Restaurant" value={donation.restaurant} />
-            <InfoBlock icon={<FaMapMarkerAlt />} label="Location" value={donation.location} />
-            <InfoBlock icon={<MdLocalDining />} label="Quantity" value={`${donation.quantity_kg} kg (${donation.quantity_portions} meals)`} />
+            <InfoBlock icon={<MdOutlineRestaurant />} label="Restaurant" value={donation.restaurant || donation.restaurant_name || 'Not specified'} />
+            <InfoBlock icon={<FaMapMarkerAlt />} label="Location" value={donation.location || 'Not specified'} />
+            <InfoBlock icon={<MdLocalDining />} label="Quantity" value={`${donation.quantity_kg || 0} kg (${donation.quantity_portions || 0} meals)`} />
             <InfoBlock icon={<FaCalendarAlt />} label="Pickup Time" value={donation.pickup_time} />
           </div>
 
           {donation.charity && (
-            <InfoBlock icon={<FaUsers />} label="Charity" value={donation.charity} />
+            <div className="mb-6">
+              <InfoBlock icon={<FaUsers />} label="Charity" value={donation.charity} />
+            </div>
           )}
 
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
             {donation.status === 'Available' && (
               <button
                 onClick={() => setShowRequestModal(true)}
-                className="flex-1 bg-gradient-to-br from-lime-500 to-amber-500 text-white font-bold py-3 px-4 rounded-lg shadow-md"
+                className="flex-1 bg-gradient-to-br from-lime-500 to-amber-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
               >
                 Request Donation
               </button>
             )}
             <button
               onClick={() => setShowReviewModal(true)}
-              className="flex-1 border-2 border-cyan-300 text-cyan-700 bg-white font-bold py-3 px-4 rounded-lg shadow-md"
+              className="flex-1 border-2 border-cyan-300 text-cyan-700 bg-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
               Leave Review
             </button>
@@ -211,56 +300,88 @@ const DonationDetails = () => {
         </div>
       </div>
 
-      {/* Reviews */}
+      {/* Reviews Section */}
       <div className="mt-8 bg-gradient-to-br from-lime-50 to-amber-50 rounded-xl p-6 shadow-xl border-2 border-cyan-300">
-        <h2 className="text-xl font-bold text-green-900 mb-4">Reviews</h2>
+        <h2 className="text-xl font-bold text-green-900 mb-4">Reviews ({reviews.length})</h2>
         <div className="space-y-4">
           {reviews.length > 0 ? reviews.map((review, idx) => (
             <div key={idx} className="border-b border-green-200 pb-4 last:border-0">
-              <div className="flex items-center mb-2">
-                <div className="flex items-center mr-2">
-                  {[...Array(5)].map((_, i) =>
-                    i < review.rating ? <FaStar key={i} className="text-yellow-400" /> : <FaRegStar key={i} className="text-yellow-400" />
-                  )}
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center">
+                  <div className="flex items-center mr-3">
+                    {[...Array(5)].map((_, i) =>
+                      i < review.rating ? <FaStar key={i} className="text-yellow-400" /> : <FaRegStar key={i} className="text-yellow-400" />
+                    )}
+                  </div>
+                  <span className="font-medium text-green-900">{review.userName || 'Anonymous'}</span>
                 </div>
                 <span className="text-sm text-green-700/80">{formatDate(review.createdAt)}</span>
               </div>
-              <p className="text-green-900">{review.comment}</p>
-              <p className="text-sm text-green-700/80 mt-1">- {review.userName || 'Anonymous'}</p>
+              <p className="text-green-800">{review.comment}</p>
             </div>
           )) : (
-            <p className="text-green-700 italic">No reviews yet.</p>
+            <p className="text-green-700 italic">No reviews yet. Be the first to leave a review!</p>
           )}
         </div>
       </div>
 
       {/* Request Modal */}
       {showRequestModal && (
-        <Modal title="Request Donation" onClose={() => setShowRequestModal(false)} onConfirm={confirmRequest}>
-          <p className="mb-4 text-green-800">You're about to request <strong>{donation.quantity_portions}</strong> meals from <strong>{donation.restaurant}</strong>.</p>
+        <Modal 
+          title="Request Donation" 
+          onClose={() => setShowRequestModal(false)} 
+          onConfirm={confirmRequest}
+        >
+          <div className="mb-4">
+            <p className="text-green-800 mb-2">You're about to request:</p>
+            <div className="bg-green-50 p-3 rounded-lg">
+              <p><strong>Donation:</strong> {donation.title}</p>
+              <p><strong>Restaurant:</strong> {donation.restaurant || donation.restaurant_name}</p>
+              <p><strong>Quantity:</strong> {donation.quantity_portions} meals ({donation.quantity_kg} kg)</p>
+              <p><strong>Pickup:</strong> {formatDate(donation.pickup_time)}</p>
+            </div>
+          </div>
+          <p className="text-sm text-green-700">Please make sure you can pick up the donation at the specified time.</p>
         </Modal>
       )}
 
       {/* Review Modal */}
       {showReviewModal && (
-        <Modal title="Leave a Review" onClose={() => setShowReviewModal(false)} onConfirm={submitReview} disableConfirm={rating === 0}>
+        <Modal 
+          title="Leave a Review" 
+          onClose={() => setShowReviewModal(false)} 
+          onConfirm={submitReview} 
+          disableConfirm={rating === 0}
+        >
           <div className="mb-4">
-            <p className="text-sm font-medium text-green-900 mb-2">Rating</p>
+            <p className="text-sm font-medium text-green-900 mb-2">Rating *</p>
             <div className="flex">
               {[1, 2, 3, 4, 5].map((star) => (
-                <button key={star} onClick={() => setRating(star)} className="text-2xl mr-1">
+                <button 
+                  key={star} 
+                  onClick={() => setRating(star)} 
+                  className="text-2xl mr-1 hover:scale-110 transition-transform"
+                >
                   {star <= rating ? <FaStar className="text-yellow-400" /> : <FaRegStar className="text-yellow-400" />}
                 </button>
               ))}
             </div>
+            {rating > 0 && (
+              <p className="text-sm text-green-700 mt-1">
+                {rating === 1 ? 'Poor' : rating === 2 ? 'Fair' : rating === 3 ? 'Good' : rating === 4 ? 'Very Good' : 'Excellent'}
+              </p>
+            )}
           </div>
-          <textarea
-            value={reviewText}
-            onChange={(e) => setReviewText(e.target.value)}
-            className="w-full px-3 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500"
-            rows="4"
-            placeholder="Share your experience..."
-          ></textarea>
+          <div className="mb-4">
+            <p className="text-sm font-medium text-green-900 mb-2">Comment (Optional)</p>
+            <textarea
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+              className="w-full px-3 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500"
+              rows="4"
+              placeholder="Share your experience with this donation..."
+            />
+          </div>
         </Modal>
       )}
     </div>
@@ -283,13 +404,20 @@ const Modal = ({ title, onClose, onConfirm, children, disableConfirm }) => (
       <h3 className="text-xl font-bold text-green-900 mb-4">{title}</h3>
       <div className="mb-6">{children}</div>
       <div className="flex justify-end gap-3">
-        <button onClick={onClose} className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-100">
+        <button 
+          onClick={onClose} 
+          className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+        >
           Cancel
         </button>
         <button
           onClick={onConfirm}
           disabled={disableConfirm}
-          className={`px-4 py-2 rounded-lg font-bold ${disableConfirm ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-gradient-to-br from-lime-500 to-amber-500 text-white hover:shadow-lg'}`}
+          className={`px-4 py-2 rounded-lg font-bold transition-all ${
+            disableConfirm 
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+              : 'bg-gradient-to-br from-lime-500 to-amber-500 text-white hover:shadow-lg'
+          }`}
         >
           Confirm
         </button>
