@@ -15,11 +15,13 @@ import DonationDetails from "../RootLayout/DonationDetails";
 import DashboardLayout from "../Homepage/DashboardLayout";
 import ProfilePage from "../Homepage/ProfilePage";
 
-import PaymentSuccess from "../Homepage/PaymentSuccess";
-import PaymentCancel from "../Homepage/PaymentCancel";
+
+
 import Payment from "../Homepage/Payment";
 import Favorites from "../Homepage/Favorites";
 import MyReviews from "../Homepage/MyReviews";
+import AllDashboardLayout from "../../AllDashboard/AllDashboardLayout";
+import CharityTransactions from "../Homepage/CharityTransactions";
 
 
 const router = createBrowserRouter([
@@ -41,6 +43,11 @@ const router = createBrowserRouter([
           element:<DonationDetails></DonationDetails>
         },
         {
+          path:'/mydashboard',
+          element:<AllDashboardLayout></AllDashboardLayout>
+
+        },
+        {
           path:'/dashboard',
           element:<DashboardLayout></DashboardLayout>,
           children:[
@@ -52,14 +59,7 @@ const router = createBrowserRouter([
               path:'request',
               element:<Payment></Payment>
             },
-            {
-              path:'payment-success',
-              element:<PaymentSuccess></PaymentSuccess>
-            },
-            {
-              path:'payment-cancel',
-              element:<PaymentCancel></PaymentCancel>
-            },
+       
             {
               path:'favorites',
               element:<Favorites></Favorites>
@@ -67,6 +67,10 @@ const router = createBrowserRouter([
             {
               path:'reviews',
               element:<MyReviews></MyReviews>
+            },
+            {
+              path:'transactions',
+              element:<CharityTransactions></CharityTransactions>
             },
           ]
         },

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../Authentication/AuthContext';
 import Swal from 'sweetalert2';
 import { FaStar, FaRegStar } from 'react-icons/fa';
+import { SyncLoader } from 'react-spinners';
 
 const MyReviews = () => {
   const { user } = useContext(AuthContext);
@@ -61,8 +62,7 @@ const MyReviews = () => {
   if (loading) {
     return (
       <div className="text-center mt-10">
-        <span className="loading loading-spinner text-green-600 loading-lg"></span>
-        <p className="mt-2 text-gray-600">Loading your reviews...</p>
+      <SyncLoader></SyncLoader>
       </div>
     );
   }

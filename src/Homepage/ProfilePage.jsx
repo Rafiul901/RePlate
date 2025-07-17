@@ -17,9 +17,9 @@ const ProfilePage = () => {
     // Simulate loading user data
     const timer = setTimeout(() => {
       setProfile({
-        name: user?.displayName || 'John Doe',
+        name: user?.displayName || 'Name',
         image: user?.photoURL || 'https://via.placeholder.com/150',
-        role: 'admin', // or 'user'
+        role: 'Admin', // or 'user'
         email: user?.email || 'user@example.com',
         joinDate: 'January 2023'
       });

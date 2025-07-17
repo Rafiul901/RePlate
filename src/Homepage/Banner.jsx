@@ -37,7 +37,6 @@ const Banner = () => {
       <Swiper
         modules={[Autoplay, EffectFade, Parallax]}
         autoplay={{
-          delay: 5000,
           disableOnInteraction: false,
           pauseOnMouseEnter: true
         }}
@@ -56,8 +55,8 @@ const Banner = () => {
               <img
                 src={slide.img}
                 alt={`Banner ${index + 1}`}
-                className="absolute inset-0 w-full h-full object-cover object-center"
-                data-swiper-parallax-scale="1.05"
+                className="absolute inset-0 w-full h-full object-cover object-center "
+                data-swiper-parallax-scale="0.85"
                 width="1920"
                 height="800"
                 loading="lazy"
