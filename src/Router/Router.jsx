@@ -12,16 +12,20 @@ import PrivateRoute from "../Authentication/PrivateRoute";
 import AllDonation from "../Homepage/AllDonation";
 import Error from "../Homepage/Error";
 import DonationDetails from "../RootLayout/DonationDetails";
-import DashboardLayout from "../Homepage/DashboardLayout";
 import ProfilePage from "../Homepage/ProfilePage";
-
-
-
 import Payment from "../Homepage/Payment";
 import Favorites from "../Homepage/Favorites";
 import MyReviews from "../Homepage/MyReviews";
 import AllDashboardLayout from "../../AllDashboard/AllDashboardLayout";
 import CharityTransactions from "../Homepage/CharityTransactions";
+import UserDashboard from "../Homepage/UserDashboard";
+import CharityDashboard from "../DashBoard/CharityDashboard";
+import RestaurantDashboard from "../DashBoard/RestaurantDashboard";
+import AdminDashboard from "../DashBoard/AdminDashboard";
+import AdminRoute from "../Authentication/AdminRoute";
+import CharityRoute from "../Authentication/CharityRoute";
+import RestaurantRoute from "../Authentication/RestaurantRoute";
+
 
 
 const router = createBrowserRouter([
@@ -35,21 +39,17 @@ const router = createBrowserRouter([
         },
         {
           path:'/allDonation',
-          element:<AllDonation></AllDonation>,
+          element:<PrivateRoute><AllDonation></AllDonation></PrivateRoute>,
           loader: ()=> fetch('http://localhost:3000/donations')
         },
         {
           path:'/donations/:id',
           element:<DonationDetails></DonationDetails>
         },
+      
         {
-          path:'/mydashboard',
-          element:<AllDashboardLayout></AllDashboardLayout>
-
-        },
-        {
-          path:'/dashboard',
-          element:<DashboardLayout></DashboardLayout>,
+          path:'/userDashboard',
+          element:<PrivateRoute><UserDashboard></UserDashboard></PrivateRoute>,
           children:[
             {
               path:'profile',
@@ -74,6 +74,27 @@ const router = createBrowserRouter([
             },
           ]
         },
+        {
+  path: '/charityDashboard',
+  element: <CharityRoute><CharityDashboard /></CharityRoute>,
+  children: [
+    // charity-specific pages
+  ]
+},
+{
+  path: '/restaurantDashboard',
+  element: <RestaurantRoute><RestaurantDashboard /></RestaurantRoute>,
+  children: [
+    // restaurant-specific pages
+  ]
+},
+{
+  path: '/adminDashboard',
+  element: <AdminRoute><AdminDashboard /></AdminRoute>,
+  children: [
+    // admin-specific pages
+  ]
+}
        
 
        

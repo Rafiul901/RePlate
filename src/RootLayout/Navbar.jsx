@@ -48,7 +48,7 @@ const Navbar = () => {
     <>
       <li><Link className='text-blue-800 font-semibold' to='/'>Home</Link></li>
       <li><Link className='text-blue-800 font-semibold' to='/allDonation'>All Donations</Link></li>
-      <li><Link className='text-blue-800 font-semibold' to='/dashboard'>Dashboard</Link></li>
+      <li><Link className='text-blue-800 font-semibold' to='/userDashboard'>Dashboard</Link></li>
     </>
   );
 

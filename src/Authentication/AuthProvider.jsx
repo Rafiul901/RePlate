@@ -6,7 +6,10 @@ import { auth } from './config';
 
 const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState(null);  
+    const [user, setUser] = useState(null);
+     const [role, setRole] = useState(null); // ✅ Add role  
+ 
+
 
     const createUser = (email, password) => {
         setLoading(true);
@@ -20,6 +23,7 @@ const AuthProvider = ({children}) => {
 
     const signOutUser = () => {
         setLoading(true);
+         setRole(null); // ✅ clear role
         return signOut(auth);
     }
 
@@ -31,6 +35,7 @@ const AuthProvider = ({children}) => {
 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
+            
             setUser(currentUser);
             setLoading(false);
         });
@@ -42,7 +47,9 @@ const AuthProvider = ({children}) => {
     const authInfo = {
         loading,
         user,
+         role, // ✅ expose role
         createUser,
+       
         signInUser,
         signOutUser,
         googleSignIn 

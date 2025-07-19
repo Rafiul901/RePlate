@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Outlet, useNavigate, NavLink } from 'react-router';
 import { FaUser, FaHeart, FaStar, FaHistory, FaSignOutAlt, FaBars, FaTimes, FaHandsHelping } from 'react-icons/fa';
 
-const DashboardLayout = () => {
+const UserDashboard = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const navigate = useNavigate();
 
@@ -24,31 +24,31 @@ const DashboardLayout = () => {
             icon={<FaUser size={18} />} 
             text="My Profile" 
             expanded={isDrawerOpen} 
-            to="/dashboard/profile" 
+            to="/userDashboard/profile" 
           />
           <SidebarItem 
             icon={<FaHandsHelping size={18} />} 
             text="Request Charity Role" 
             expanded={isDrawerOpen} 
-            to="/dashboard/request" 
+            to="/userDashboard/request" 
           />
           <SidebarItem 
             icon={<FaHeart size={18} />} 
             text="Favorites" 
             expanded={isDrawerOpen} 
-            to="/dashboard/favorites" 
+            to="/userDashboard/favorites" 
           />
           <SidebarItem 
             icon={<FaStar size={18} />} 
             text="My Reviews" 
             expanded={isDrawerOpen} 
-            to="/dashboard/reviews" 
+            to="/userDashboard/reviews" 
           />
           <SidebarItem 
             icon={<FaHistory size={18} />} 
             text="Transactions" 
             expanded={isDrawerOpen} 
-            to="/dashboard/transactions" 
+            to="/userDashboard/transactions" 
           />
         </nav>
         
@@ -90,4 +90,4 @@ const SidebarItem = ({ icon, text, expanded, to, onClick }) => {
   );
 };
 
-export default DashboardLayout;
+export default UserDashboard;

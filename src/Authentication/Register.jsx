@@ -89,45 +89,57 @@ const Register = () => {
   const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!validate()) return;
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      // Create user account
-      const result = await createUser(formData.email, formData.password);
+  try {
+    const result = await createUser(formData.email, formData.password);
 
-      // Upload image to ImgBB
-      const photoURL = await uploadImageToImgBB(formData.photo);
+    const photoURL = await uploadImageToImgBB(formData.photo);
 
-      // Update user profile with name and photo URL
-      await updateProfile(result.user, {
-        displayName: formData.name,
-        photoURL: photoURL
-      });
+    await updateProfile(result.user, {
+      displayName: formData.name,
+      photoURL: photoURL
+    });
 
-      Swal.fire({
-        icon: 'success',
-        title: 'Registration Successful!',
-        text: 'Welcome to RePlate!',
-        timer: 2000,
-        showConfirmButton: false
-      });
+    // ✅ Save to backend with default role
+    await fetch(`http://localhost:3000/users/${formData.email}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        photo: photoURL,
+        role: 'user' // default
+      })
+    });
 
-      navigate('/');
-    } catch (error) {
-      console.error(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Registration Failed',
-        text: error.message
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+    Swal.fire({
+      icon: 'success',
+      title: 'Registration Successful!',
+      text: 'Welcome to RePlate!',
+      timer: 2000,
+      showConfirmButton: false
+    });
+
+    navigate('/');
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Registration Failed',
+      text: error.message
+    });
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
