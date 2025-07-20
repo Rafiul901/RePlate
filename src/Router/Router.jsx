@@ -25,6 +25,8 @@ import AdminDashboard from "../DashBoard/AdminDashboard";
 import AdminRoute from "../Authentication/AdminRoute";
 import CharityRoute from "../Authentication/CharityRoute";
 import RestaurantRoute from "../Authentication/RestaurantRoute";
+import RestaurantProfile from "../Homepage/RestaurantProfile";
+import AddDonation from "../Restaurant/AddDonation";
 
 
 
@@ -85,7 +87,14 @@ const router = createBrowserRouter([
   path: '/restaurantDashboard',
   element: <RestaurantRoute><RestaurantDashboard /></RestaurantRoute>,
   children: [
-    // restaurant-specific pages
+    {
+      path:'profile',
+      element:<RestaurantProfile></RestaurantProfile>
+    },
+    {
+      path:'addDonations',
+      element:<AddDonation></AddDonation>
+    }
   ]
 },
 {
