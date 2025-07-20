@@ -1,22 +1,30 @@
-// src/Authentication/DashboardRouter.jsx
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router';
-import { AuthContext } from '../Authentication/AuthContext';
+import { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+
 import Loader from '../Homepage/Loader';
+import { AuthContext } from '../Authentication/AuthContext';
 
 const DashboardRouter = () => {
-  const { user, userRole, loading } = useContext(AuthContext);
+  const { user, role, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  if (loading) return <Loader />;
-  if (!user) return <Navigate to="/login" replace />;
+  useEffect(() => {
+    if (!loading) {
+      if (!user) {
+        navigate('/login');
+      } else if (role === 'admin') {
+        navigate('/adminDashboard');
+      } else if (role === 'charity') {
+        navigate('/charityDashboard');
+      } else if (role === 'restaurant') {
+        navigate('/restaurantDashboard');
+      } else {
+        navigate('/userDashboard');
+      }
+    }
+  }, [user, role, loading, navigate]);
 
-  // Redirect based on role
-  if (userRole === 'admin') return <Navigate to="/adminDashboard" replace />;
-  if (userRole === 'restaurant') return <Navigate to="/restaurantDashboard" replace />;
-  if (userRole === 'charity') return <Navigate to="/charityDashboard" replace />;
-  
-  // Default fallback
-  return <Navigate to="/userDashboard" replace />;
+  return <Loader />;
 };
 
 export default DashboardRouter;

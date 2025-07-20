@@ -33,16 +33,29 @@ const AuthProvider = ({children}) => {
         return signInWithPopup(auth, provider);
     }
 
-    useEffect(() => {
-        const unSubscribe = onAuthStateChanged(auth, currentUser => {
-            
-            setUser(currentUser);
-            setLoading(false);
-        });
-        return () => {
-            unSubscribe();
-        }
-    }, []);
+useEffect(() => {
+  const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    setUser(currentUser);
+
+    if (currentUser?.email) {
+      try {
+        const res = await fetch(`http://localhost:3000/users/${currentUser.email}`);
+        const data = await res.json();
+        setRole(data.role); // ✅ Set role from DB
+      } catch (err) {
+        console.error("Failed to fetch role:", err);
+        setRole(null);
+      }
+    } else {
+      setRole(null); // No user = no role
+    }
+
+    setLoading(false);
+  });
+
+  return () => unSubscribe();
+}, []);
+
 
     const authInfo = {
         loading,

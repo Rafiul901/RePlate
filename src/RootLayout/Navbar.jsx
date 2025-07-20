@@ -8,7 +8,7 @@ import { AuthContext } from '../Authentication/AuthContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user, googleSignIn, signOutUser } = useContext(AuthContext);
+  const { user, googleSignIn, signOutUser,role } = useContext(AuthContext);
 
   const handleGoogleLogin = async () => {
     try {
@@ -48,7 +48,23 @@ const Navbar = () => {
     <>
       <li><Link className='text-blue-800 font-semibold' to='/'>Home</Link></li>
       <li><Link className='text-blue-800 font-semibold' to='/allDonation'>All Donations</Link></li>
-      <li><Link className='text-blue-800 font-semibold' to='/userDashboard'>Dashboard</Link></li>
+      <li>
+  <Link
+    className="text-blue-800 font-semibold"
+    to={
+      role === 'admin'
+        ? '/adminDashboard'
+        : role === 'charity'
+        ? '/charityDashboard'
+        : role === 'restaurant'
+        ? '/restaurantDashboard'
+        : '/userDashboard'
+    }
+  >
+    Dashboard
+  </Link>
+</li>
+
     </>
   );
 
