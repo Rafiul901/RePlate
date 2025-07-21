@@ -2,13 +2,13 @@ import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../Authentication/AuthContext';
 import {  SyncLoader } from 'react-spinners';
 
-const ProfilePage = () => {
+const CharityProfile = () => {
   const { user } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState({
     name: '',
     image: '',
-    role: 'user',
+    role: 'charity',
     email: '',
     joinDate: ''
   });
@@ -19,7 +19,7 @@ const ProfilePage = () => {
       setProfile({
         name: user?.displayName || 'Name',
         image: user?.photoURL || 'https://via.placeholder.com/150',
-        role: 'User', // or 'user'
+        role: 'Charity', // or 'user'
         email: user?.email || 'user@example.com',
         joinDate: 'January 2023'
       });
@@ -43,8 +43,8 @@ const ProfilePage = () => {
   return (
     <div className="max-w-2xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-600">
-          My Profile
+        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-blue-600">
+          Charity Profile
         </h1>
       </div>
 
@@ -101,4 +101,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default CharityProfile;

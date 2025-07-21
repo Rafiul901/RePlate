@@ -37,7 +37,7 @@ const RestaurantDashboard = () => {
             icon={<FaMoneyBill   size={18} />} 
             text="My Donations" 
             expanded={isDrawerOpen} 
-            to="/restaurantDashboard/donations" 
+            to="/restaurantDashboard/myDonations" 
           />
           <SidebarItem 
             icon={<MdOutlineRequestQuote  size={18} />} 

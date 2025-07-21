@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router';
-
+import { useNavigate } from 'react-router'; // ✅ FIXED
 import Loader from '../Homepage/Loader';
 import { AuthContext } from '../Authentication/AuthContext';
 

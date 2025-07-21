@@ -16,7 +16,7 @@ import ProfilePage from "../Homepage/ProfilePage";
 import Payment from "../Homepage/Payment";
 import Favorites from "../Homepage/Favorites";
 import MyReviews from "../Homepage/MyReviews";
-import AllDashboardLayout from "../../AllDashboard/AllDashboardLayout";
+
 import CharityTransactions from "../Homepage/CharityTransactions";
 import UserDashboard from "../Homepage/UserDashboard";
 import CharityDashboard from "../DashBoard/CharityDashboard";
@@ -27,6 +27,15 @@ import CharityRoute from "../Authentication/CharityRoute";
 import RestaurantRoute from "../Authentication/RestaurantRoute";
 import RestaurantProfile from "../Homepage/RestaurantProfile";
 import AddDonation from "../Restaurant/AddDonation";
+import MyDonations from "../Restaurant/MyDonations";
+import UpdateDonation from "../Restaurant/UpdateDonation";
+import RequestDonation from "../Restaurant/RequestDonation";
+import DashboardRouter from "./DashboardRouter";
+import CharityProfile from "../Charity/CharityProfile";
+import CharityRequest from "../Charity/CharityRequest";
+import CharityPickup from "../Charity/CharityPickup";
+import CharityDonation from "../Charity/CharityDonation";
+import CharityTransaction from "../Charity/CharityTransaction";
 
 
 
@@ -80,9 +89,30 @@ const router = createBrowserRouter([
   path: '/charityDashboard',
   element: <CharityRoute><CharityDashboard /></CharityRoute>,
   children: [
-    // charity-specific pages
+    {
+      path:'profile',
+      element:<CharityProfile></CharityProfile>
+    },
+    {
+      path:'requests',
+      element:<CharityRequest></CharityRequest>
+    },
+    {
+      path:'pickups',
+      element:<CharityPickup></CharityPickup>
+    },
+    {
+      path:'receivedDonations',
+      element:<CharityDonation></CharityDonation>
+    },
+    {
+      path:'transaction',
+      element:<CharityTransaction></CharityTransaction>
+    },
   ]
 },
+
+
 {
   path: '/restaurantDashboard',
   element: <RestaurantRoute><RestaurantDashboard /></RestaurantRoute>,
@@ -94,7 +124,19 @@ const router = createBrowserRouter([
     {
       path:'addDonations',
       element:<AddDonation></AddDonation>
-    }
+    },
+    {
+      path:'myDonations',
+      element:<MyDonations></MyDonations>
+    },
+    {
+      path:'update-donation/:id',
+      element:<UpdateDonation></UpdateDonation>
+    },
+    {
+      path:'reqDonations',
+      element:<RequestDonation></RequestDonation>
+    },
   ]
 },
 {
