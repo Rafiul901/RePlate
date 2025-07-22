@@ -36,6 +36,12 @@ import CharityRequest from "../Charity/CharityRequest";
 import CharityPickup from "../Charity/CharityPickup";
 import CharityDonation from "../Charity/CharityDonation";
 import CharityTransaction from "../Charity/CharityTransaction";
+import AdminProfile from "../Admin/AdminProfile";
+import ManageDonation from "../Admin/ManageDonation";
+import ManageUsers from "../Admin/ManageUsers";
+import ManageRoleRequest from "../Admin/ManageRoleRequest";
+import ManageRequest from "../Admin/ManageRequest";
+import FeatureDonation from "../Admin/FeatureDonation";
 
 
 
@@ -87,7 +93,7 @@ const router = createBrowserRouter([
         },
         {
   path: '/charityDashboard',
-  element: <CharityRoute><CharityDashboard /></CharityRoute>,
+  element: <PrivateRoute><CharityRoute><CharityDashboard /></CharityRoute></PrivateRoute>,
   children: [
     {
       path:'profile',
@@ -115,7 +121,7 @@ const router = createBrowserRouter([
 
 {
   path: '/restaurantDashboard',
-  element: <RestaurantRoute><RestaurantDashboard /></RestaurantRoute>,
+  element: <PrivateRoute><RestaurantRoute><RestaurantDashboard /></RestaurantRoute></PrivateRoute>,
   children: [
     {
       path:'profile',
@@ -141,9 +147,32 @@ const router = createBrowserRouter([
 },
 {
   path: '/adminDashboard',
-  element: <AdminRoute><AdminDashboard /></AdminRoute>,
+  element: <PrivateRoute><AdminRoute><AdminDashboard /></AdminRoute></PrivateRoute>,
   children: [
-    // admin-specific pages
+    {
+      path:'profile',
+      element:<AdminProfile></AdminProfile>
+    },
+    {
+      path:'manageDonation',
+      element:<ManageDonation></ManageDonation>
+    },
+    {
+      path:'manageUsers',
+      element:<ManageUsers></ManageUsers>
+    },
+    {
+      path:'manageRole',
+      element:<ManageRoleRequest></ManageRoleRequest>
+    },
+    {
+      path:'manageRequests',
+      element:<ManageRequest></ManageRequest>
+    },
+    {
+      path:'feature',
+      element:<FeatureDonation></FeatureDonation>
+    },
   ]
 }
        

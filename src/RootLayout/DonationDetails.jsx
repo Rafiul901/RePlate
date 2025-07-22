@@ -55,6 +55,8 @@ const DonationDetails = () => {
     }
   };
 
+  
+
   const checkIfFavorite = async () => {
     if (!user?.email) return;
     
@@ -140,13 +142,15 @@ const DonationDetails = () => {
     }
     
     try {
-      const requesterId = user.email;
-      const pickupTime = new Date().toISOString();
-      const res = await fetch(`http://localhost:3000/donations/${id}/request`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ requesterId, pickupTime })
-      });
+  const requesterId = user.email;
+  const requesterName = user.name || user.displayName || "Unknown";
+  const pickupTime = new Date().toISOString();
+
+  const res = await fetch(`http://localhost:3000/donations/${id}/request`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ requesterId, requesterName, pickupTime })
+  });
       
       if (!res.ok) {
         const errorData = await res.json();
@@ -338,7 +342,7 @@ const DonationDetails = () => {
               <p><strong>Donation:</strong> {donation.title}</p>
               <p><strong>Restaurant:</strong> {donation.restaurant || donation.restaurant_name}</p>
               <p><strong>Quantity:</strong> {donation.quantity_portions} meals ({donation.quantity_kg} kg)</p>
-              <p><strong>Pickup:</strong> {formatDate(donation.pickup_time)}</p>
+              <p><strong>Pickup:</strong> {donation.pickup_time}</p>
             </div>
           </div>
           <p className="text-sm text-green-700">Please make sure you can pick up the donation at the specified time.</p>
@@ -427,3 +431,4 @@ const Modal = ({ title, onClose, onConfirm, children, disableConfirm }) => (
 );
 
 export default DonationDetails;
+
