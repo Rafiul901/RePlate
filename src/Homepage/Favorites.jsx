@@ -124,7 +124,7 @@ const Favorites = () => {
       <div className="text-center mt-10 text-gray-600">
         <p>You haven't saved any favorite donations yet.</p>
         <Link 
-          to="/donations" 
+          to="/AllDonation" 
           className="mt-4 inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
         >
           Browse Donations

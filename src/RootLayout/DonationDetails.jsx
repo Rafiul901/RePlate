@@ -24,6 +24,12 @@ const DonationDetails = () => {
   const [reviewText, setReviewText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [favoriteLoading, setFavoriteLoading] = useState(false);
+  const [pickupTime, setPickupTime] = useState('');
+const [requestDescription, setRequestDescription] = useState('');
+
+
+
+
 
   const statusColors = {
     'Available': 'from-lime-400 to-yellow-400',
@@ -135,36 +141,56 @@ const DonationDetails = () => {
     }
   };
 
-  const confirmRequest = async () => {
-    if (!user?.email) {
-      Swal.fire('Error', 'Please log in to request donations.', 'error');
-      return;
-    }
-    
-    try {
-  const requesterId = user.email;
-  const requesterName = user.name || user.displayName || "Unknown";
-  const pickupTime = new Date().toISOString();
+const confirmRequest = async () => {
+  if (!user?.email) {
+    Swal.fire('Error', 'Please log in to request donations.', 'error');
+    return;
+  }
 
-  const res = await fetch(`http://localhost:3000/donations/${id}/request`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ requesterId, requesterName, pickupTime })
-  });
-      
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || 'Failed to request donation');
-      }
-      
-      Swal.fire('Success!', 'Donation requested successfully.', 'success');
-      setShowRequestModal(false);
-      fetchDonation(); // Refresh donation status
-    } catch (err) {
-      console.error('Error requesting donation:', err);
-      Swal.fire('Error', err.message || 'Could not request donation. Please try again.', 'error');
+  try {
+    const requesterId = user.email;
+    const requesterName = user.name || user.displayName || "Unknown";
+    const charityEmail = user.email;
+    const charityName = user.orgName || user.name || "Unknown Organization";
+    const finalPickupTime = pickupTime || new Date().toISOString();
+    const description = requestDescription || "";
+
+    const res = await fetch(`http://localhost:3000/donations/${id}/request`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        requesterId,
+        requesterName,
+        charityEmail,
+        charityName,
+        pickupTime: finalPickupTime,
+        requestDescription: description,
+
+        // ✅ Include full donation data
+        donationTitle: donation.title || "Untitled",
+        donationType: donation.food_type || donation.type || "Unknown",
+        donationQuantity: donation.quantity_kg || donation.quantity || "N/A",
+        restaurantEmail: donation.restaurant_email || donation.restaurantEmail || "N/A",
+        restaurantName: donation.restaurant || donation.restaurant_name || "Unknown"
+      })
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || 'Failed to request donation');
     }
-  };
+
+    Swal.fire('Success!', 'Donation requested successfully.', 'success');
+    setShowRequestModal(false);
+    fetchDonation(); // Refresh donation status
+  } catch (err) {
+    console.error('Error requesting donation:', err);
+    Swal.fire('Error', err.message || 'Could not request donation. Please try again.', 'error');
+  }
+};
+
+
+
 
   const submitReview = async () => {
     if (!user?.email) {
@@ -331,22 +357,53 @@ const DonationDetails = () => {
 
       {/* Request Modal */}
       {showRequestModal && (
-        <Modal 
-          title="Request Donation" 
-          onClose={() => setShowRequestModal(false)} 
-          onConfirm={confirmRequest}
-        >
-          <div className="mb-4">
-            <p className="text-green-800 mb-2">You're about to request:</p>
-            <div className="bg-green-50 p-3 rounded-lg">
-              <p><strong>Donation:</strong> {donation.title}</p>
-              <p><strong>Restaurant:</strong> {donation.restaurant || donation.restaurant_name}</p>
-              <p><strong>Quantity:</strong> {donation.quantity_portions} meals ({donation.quantity_kg} kg)</p>
-              <p><strong>Pickup:</strong> {donation.pickup_time}</p>
-            </div>
-          </div>
-          <p className="text-sm text-green-700">Please make sure you can pick up the donation at the specified time.</p>
-        </Modal>
+<Modal 
+  title="Request Donation" 
+  onClose={() => setShowRequestModal(false)} 
+  onConfirm={confirmRequest}
+>
+  <div className="mb-4">
+    <p className="text-green-800 mb-2">You're about to request:</p>
+    <div className="bg-green-50 p-3 rounded-lg text-sm">
+      <p><strong>Donation:</strong> {donation?.title || 'Untitled Donation'}</p>
+      <p><strong>Food Type:</strong> {donation?.foodType || donation?.type || 'Unknown'}</p>
+      <p><strong>Restaurant:</strong> {donation?.restaurant || donation?.restaurant_name || 'Unknown Restaurant'}</p>
+      <p><strong>Restaurant Email:</strong> {donation?.restaurant_email || donation?.restaurantEmail || 'Not Provided'}</p>
+      <p><strong>Quantity:</strong> {donation?.quantity_portions || 'N/A'} meals ({donation?.quantity_kg || 'N/A'} kg)</p>
+      <p><strong>Original Pickup Time:</strong> {donation?.pickup_time || 'Not specified'}</p>
+    </div>
+  </div>
+
+  {/* Editable Pickup Time */}
+  <div className="mb-4">
+    <label className="block text-sm font-medium mb-1 text-green-700">Preferred Pickup Time</label>
+    <input 
+      type="datetime-local" 
+      value={pickupTime}
+      onChange={(e) => setPickupTime(e.target.value)}
+      className="w-full border border-green-300 rounded px-3 py-2"
+      required
+    />
+  </div>
+
+  {/* Request description */}
+  <div className="mb-4">
+    <label className="block text-sm font-medium mb-1 text-green-700">Message to Restaurant</label>
+    <textarea
+      value={requestDescription}
+      onChange={(e) => setRequestDescription(e.target.value)}
+      placeholder="Any special instructions or notes..."
+      className="w-full border border-green-300 rounded px-3 py-2"
+      rows={3}
+    />
+  </div>
+
+  <p className="text-sm text-green-700">
+    Please ensure you're available for pickup at the chosen time.
+  </p>
+</Modal>
+
+
       )}
 
       {/* Review Modal */}

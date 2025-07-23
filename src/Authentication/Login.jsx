@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router'; // ✅ corrected import
+import { Link, useLocation, useNavigate } from 'react-router'; 
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
 import { AuthContext } from './AuthContext';
 import Swal from 'sweetalert2';
@@ -68,7 +68,7 @@ const Login = () => {
       Swal.fire({
         icon: 'error',
         title: 'Login Failed',
-        text: error.message
+        text: 'Check your Password or Email'
       });
     } finally {
       setIsLoading(false);
