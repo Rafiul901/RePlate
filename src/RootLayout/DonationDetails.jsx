@@ -14,7 +14,7 @@ import { AuthContext } from '../Authentication/AuthContext';
 const DonationDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user,role } = useContext(AuthContext);
   const [donation, setDonation] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -305,21 +305,21 @@ const confirmRequest = async () => {
             <InfoBlock icon={<FaCalendarAlt />} label="Pickup Time" value={donation.pickup_time} />
           </div>
 
-          {donation.charity && (
+          {donation.charityName && (
             <div className="mb-6">
-              <InfoBlock icon={<FaUsers />} label="Charity" value={donation.charity} />
+              <InfoBlock icon={<FaUsers />} label="Charity" value={donation.charityName} />
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-4 mt-8">
-            {donation.status === 'Available' && (
-              <button
-                onClick={() => setShowRequestModal(true)}
-                className="flex-1 bg-gradient-to-br from-lime-500 to-amber-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
-              >
-                Request Donation
-              </button>
-            )}
+         <div className="flex flex-col sm:flex-row gap-4 mt-8">
+  {donation.status === 'Available' && role === 'charity' && (
+    <button
+      onClick={() => setShowRequestModal(true)}
+      className="flex-1 bg-gradient-to-br from-lime-500 to-amber-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow hover:from-lime-600 hover:to-amber-600 active:scale-95 transform "
+    >
+      Request Donation
+    </button>
+  )}
             <button
               onClick={() => setShowReviewModal(true)}
               className="flex-1 border-2 border-cyan-300 text-cyan-700 bg-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"

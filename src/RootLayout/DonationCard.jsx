@@ -8,7 +8,7 @@ const DonationCard = ({ donation }) => {
     description,
     restaurant, 
     location, 
-    charity, 
+    charityName, 
     status, 
     quantity_kg, 
     quantity_portions,
@@ -69,7 +69,7 @@ const DonationCard = ({ donation }) => {
           </div>
 
           {/* Charity info (conditional) */}
-          {charity && (
+          {charityName && (
             <div className="flex items-center mb-3">
               <div className="bg-gradient-to-br from-lime-300 to-yellow-300 p-2 rounded-lg mr-3 shadow-inner flex-shrink-0">
                 <svg className="h-5 w-5 text-green-800" viewBox="0 0 20 20" fill="currentColor">
@@ -78,7 +78,7 @@ const DonationCard = ({ donation }) => {
               </div>
               <div className="min-w-0">
                 <p className="text-xs font-medium text-green-900">Assigned to:</p>
-                <p className="text-sm text-green-700/80 truncate">{charity}</p>
+                <p className="text-sm text-green-700/80 truncate">{charityName}</p>
               </div>
             </div>
           )}

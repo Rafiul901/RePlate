@@ -111,7 +111,7 @@ const CharityRequest = () => {
                     </div>
                     <div>
                       <p className="text-xs text-gray-500">Restaurant</p>
-                      <p className="font-medium text-gray-800">{req.restaurantName || "N/A"}</p>
+                      <p className="font-medium text-gray-800">{req.restaurant || "N/A"}</p>
                     </div>
                   </div>
                   
