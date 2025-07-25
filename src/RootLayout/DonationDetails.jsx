@@ -39,7 +39,7 @@ const [requestDescription, setRequestDescription] = useState('');
 
   const fetchDonation = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/donations/${id}`);
+      const res = await fetch(`https://replate-backend.vercel.app/donations/${id}`);
       if (!res.ok) throw new Error('Failed to fetch donation');
       const data = await res.json();
       setDonation(data);
@@ -51,7 +51,7 @@ const [requestDescription, setRequestDescription] = useState('');
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/donations/${id}/reviews`);
+      const res = await fetch(`https://replate-backend.vercel.app/donations/${id}/reviews`);
       if (!res.ok) throw new Error('Failed to fetch reviews');
       const data = await res.json();
       setReviews(data);
@@ -67,7 +67,7 @@ const [requestDescription, setRequestDescription] = useState('');
     if (!user?.email) return;
     
     try {
-      const res = await fetch(`http://localhost:3000/favorites/${user.email}`);
+      const res = await fetch(`https://replate-backend.vercel.app/favorites/${user.email}`);
       if (res.ok) {
         const favorites = await res.json();
         const isFav = favorites.some(fav => fav.donationId === id);
@@ -103,7 +103,7 @@ const [requestDescription, setRequestDescription] = useState('');
       const userId = user.email;
       
       if (isFavorite) {
-        const res = await fetch(`http://localhost:3000/favorites/${userId}/${id}`, {
+        const res = await fetch(`https://replate-backend.vercel.app/favorites/${userId}/${id}`, {
           method: 'DELETE'
         });
         if (!res.ok) throw new Error('Failed to remove from favorites');
@@ -117,7 +117,7 @@ const [requestDescription, setRequestDescription] = useState('');
           showConfirmButton: false
         });
       } else {
-        const res = await fetch(`http://localhost:3000/favorites`, {
+        const res = await fetch(`https://replate-backend.vercel.app/favorites`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId, donationId: id })
@@ -155,7 +155,7 @@ const confirmRequest = async () => {
     const finalPickupTime = pickupTime || new Date().toISOString();
     const description = requestDescription || "";
 
-    const res = await fetch(`http://localhost:3000/donations/${id}/request`, {
+    const res = await fetch(`https://replate-backend.vercel.app/donations/${id}/request`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
@@ -207,7 +207,7 @@ const confirmRequest = async () => {
     try {
       const userId = user.email;
       const userName = user?.displayName || user?.name || user?.email || "Anonymous";
-      const res = await fetch(`http://localhost:3000/donations/${id}/reviews`, {
+      const res = await fetch(`https://replate-backend.vercel.app/donations/${id}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, userName, rating, comment: reviewText })

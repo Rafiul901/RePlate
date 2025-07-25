@@ -21,7 +21,7 @@ const Favorites = () => {
 
       try {
         setError(null);
-        const res = await axios.get(`http://localhost:3000/favorites/${user.email}`);
+        const res = await axios.get(`https://replate-backend.vercel.app/favorites/${user.email}`);
         const favoriteEntries = res.data;
 
         if (favoriteEntries.length === 0) {

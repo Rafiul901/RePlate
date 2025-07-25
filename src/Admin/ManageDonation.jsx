@@ -11,7 +11,7 @@ const ManageDonation = () => {
 
   const fetchPendingDonations = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/admin/pending-donations');
+      const res = await axios.get('https://replate-backend.vercel.app/admin/pending-donations');
       setPendingDonations(res.data);
     } catch (err) {
       console.error('Error fetching pending donations:', err);
@@ -27,9 +27,9 @@ const ManageDonation = () => {
       };
 
       // Move to main donations collection
-     await axios.post("http://localhost:3000/donations", donation); // Make sure this endpoint exists
+     await axios.post("https://replate-backend.vercel.app/donations", donation); // Make sure this endpoint exists
       // Remove from pending collection
-       await axios.delete(`http://localhost:3000/pending-donations/${donation._id}`);
+       await axios.delete(`https://replate-backend.vercel.app/pending-donations/${donation._id}`);
 
       Swal.fire('Verified', 'Donation has been verified and published.', 'success');
       fetchPendingDonations();
@@ -41,7 +41,7 @@ const ManageDonation = () => {
 
   const handleReject = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/pending-donations/${id}`, { status: 'Rejected' });
+      await axios.patch(`https://replate-backend.vercel.app/pending-donations/${id}`, { status: 'Rejected' });
       Swal.fire('Rejected', 'Donation has been rejected.', 'info');
       fetchPendingDonations();
     } catch (err) {

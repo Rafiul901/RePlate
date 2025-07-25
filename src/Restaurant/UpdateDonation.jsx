@@ -53,7 +53,7 @@ const UpdateDonation = () => {
         image: imageUrl
       };
 
-      const response = await fetch(`http://localhost:3000/pending-donations/${donation._id}`, {
+      const response = await fetch(`https://replate-backend.vercel.app/pending-donations/${donation._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData)

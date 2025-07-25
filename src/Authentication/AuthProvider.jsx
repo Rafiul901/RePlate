@@ -39,7 +39,7 @@ useEffect(() => {
 
     if (currentUser?.email) {
       try {
-        const res = await fetch(`http://localhost:3000/users/${currentUser.email}`);
+        const res = await fetch(`https://replate-backend.vercel.app/users/${currentUser.email}`);
         const data = await res.json();
         setRole(data.role); // ✅ Set role from DB
       } catch (err) {

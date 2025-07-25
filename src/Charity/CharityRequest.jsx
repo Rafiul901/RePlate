@@ -24,7 +24,7 @@ const CharityRequest = () => {
     if (!user?.email) return;
 
     axios
-      .get(`http://localhost:3000/my-requests/${user.email}`)
+      .get(`https://replate-backend.vercel.app/my-requests/${user.email}`)
       .then((res) => setRequests(res.data))
       .catch((err) => {
         console.error("Failed to load requests:", err);
@@ -45,7 +45,7 @@ const CharityRequest = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:3000/requests/${id}`)
+          .delete(`https://replate-backend.vercel.app/requests/${id}`)
           .then(() => {
             setRequests(requests.filter((r) => r._id !== id));
             Swal.fire("Cancelled", "Your request has been cancelled.", "success");

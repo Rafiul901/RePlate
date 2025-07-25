@@ -9,7 +9,7 @@ const ManageRequest = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/charity-requests');
+        const res = await axios.get('https://replate-backend.vercel.app/charity-requests');
         setRequests(res.data);
       } catch (err) {
         console.error('Failed to fetch requests', err);
@@ -31,7 +31,7 @@ const ManageRequest = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:3000/charity-requests/${id}`);
+        await axios.delete(`https://replate-backend.vercel.app/charity-requests/${id}`);
         setRequests(prev => prev.filter(r => r._id !== id));
 
         Swal.fire('Deleted!', 'The request has been removed.', 'success');

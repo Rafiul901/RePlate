@@ -26,7 +26,7 @@ const CharityDonation = () => {
       setLoading(true);
       try {
         console.log('🌐 Making API call for charity:', user.email);
-        const res = await axios.get(`http://localhost:3000/charity/${user.email}/received-donations`);
+        const res = await axios.get(`https://replate-backend.vercel.app/charity/${user.email}/received-donations`);
         console.log('📡 Response status:', res.status);
         console.log('📦 Received donations:', res.data);
         console.log('📊 Donations count:', res.data?.length);
@@ -39,7 +39,7 @@ const CharityDonation = () => {
         // Try the original endpoint as fallback
         console.log('🔄 Trying fallback endpoint...');
         try {
-          const fallbackRes = await axios.get(`http://localhost:3000/pickups/${user.email}`);
+          const fallbackRes = await axios.get(`https://replate-backend.vercel.app/pickups/${user.email}`);
           const pickedUp = fallbackRes.data.filter(d => d.status === 'Picked Up');
           console.log('📦 Fallback data:', pickedUp);
           setDonations(pickedUp);
@@ -91,7 +91,7 @@ const CharityDonation = () => {
       };
 
       console.log('📝 Submitting review for donation:', selectedDonation.donationId);
-      await axios.post(`http://localhost:3000/donations/${selectedDonation.donationId}/reviews`, reviewData);
+      await axios.post(`https://replate-backend.vercel.app/donations/${selectedDonation.donationId}/reviews`, reviewData);
 
       Swal.fire('Success', 'Review submitted successfully!', 'success');
       closeReviewModal();

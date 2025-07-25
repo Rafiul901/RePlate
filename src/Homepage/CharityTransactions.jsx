@@ -23,7 +23,7 @@ const CharityTransactions = () => {
         console.log('Fetching transactions for email:', user.email);
         
         const res = await axios.get(
-          `http://localhost:3000/charity-role/transactions/${user.email}`
+          `https://replate-backend.vercel.app/charity-role/transactions/${user.email}`
         );
         
         console.log('API Response:', res.data);

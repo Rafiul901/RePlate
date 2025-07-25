@@ -7,7 +7,7 @@ const ManageRoleRequest = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/role-requests');
+      const res = await axios.get('https://replate-backend.vercel.app/role-requests');
       setRequests(res.data);
     } catch (err) {
       console.error('Failed to fetch role requests:', err);
@@ -26,13 +26,13 @@ const ManageRoleRequest = () => {
 
     try {
       // Update request status
-      await axios.patch(`http://localhost:3000/role-requests/${req._id}`, {
+      await axios.patch(`https://replate-backend.vercel.app/role-requests/${req._id}`, {
         status: action === 'approve' ? 'Approved' : 'Rejected',
       });
 
       // Assign role if approved
       if (action === 'approve') {
-        await axios.patch(`http://localhost:3000/users/${req.email}/role`, {
+        await axios.patch(`https://replate-backend.vercel.app/users/${req.email}/role`, {
           role: 'Charity',
         });
       }

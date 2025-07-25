@@ -15,7 +15,7 @@ const RequestDonation = () => {
     const fetchRequests = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:3000/restaurant-requests`, {
+        const res = await axios.get(`https://replate-backend.vercel.app/restaurant-requests`, {
           params: { restaurantEmail: user?.email },
         });
         setRequests(res.data);
@@ -42,7 +42,7 @@ const RequestDonation = () => {
 
     setActionLoading(id);
     try {
-      await axios.patch(`http://localhost:3000/requests/${id}/accept`, {
+      await axios.patch(`https://replate-backend.vercel.app/requests/${id}/accept`, {
         donationId,
       });
       setRequests((prev) =>
@@ -74,7 +74,7 @@ const RequestDonation = () => {
 
     setActionLoading(id);
     try {
-      await axios.patch(`http://localhost:3000/requests/${id}/reject`, {
+      await axios.patch(`https://replate-backend.vercel.app/requests/${id}/reject`, {
         rejectionReason: reason,
       });
       setRequests((prev) =>

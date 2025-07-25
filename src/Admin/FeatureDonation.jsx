@@ -12,7 +12,7 @@ const FeatureDonation = () => {
 
   const fetchVerifiedDonations = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/verified-donations');
+      const res = await axios.get('https://replate-backend.vercel.app/verified-donations');
       setDonations(res.data);
     } catch (error) {
       console.error('Failed to fetch donations:', error);
@@ -23,7 +23,7 @@ const FeatureDonation = () => {
 
   const handleFeature = async (donationId) => {
     try {
-      const res = await axios.patch(`http://localhost:3000/donations/${donationId}/feature`, {
+      const res = await axios.patch(`https://replate-backend.vercel.app/donations/${donationId}/feature`, {
         isFeatured: true
       });
 

@@ -57,7 +57,7 @@ const router = createBrowserRouter([
         {
           path:'/allDonation',
           element:<PrivateRoute><AllDonation></AllDonation></PrivateRoute>,
-          loader: ()=> fetch('http://localhost:3000/donations')
+          loader: ()=> fetch('https://replate-backend.vercel.app/donations')
         },
         {
           path:'/donations/:id',

@@ -9,7 +9,7 @@ const LatestCharityRequests = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/latest-charity-requests")
+    axios.get("https://replate-backend.vercel.app/latest-charity-requests")
       .then(res => {
         setRequests(res.data);
         setLoading(false);

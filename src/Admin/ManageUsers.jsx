@@ -7,7 +7,7 @@ const ManageUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/users');
+      const res = await axios.get('https://replate-backend.vercel.app/users');
       setUsers(res.data);
     } catch (err) {
       console.error('Failed to fetch users', err);
@@ -28,7 +28,7 @@ const ManageUsers = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await axios.patch(`http://localhost:3000/users/${email}/role`, { role });
+        await axios.patch(`https://replate-backend.vercel.app/users/${email}/role`, { role });
         await fetchUsers();
         Swal.fire('Success!', `User role updated to ${role}.`, 'success');
       } catch (err) {
@@ -48,7 +48,7 @@ const ManageUsers = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:3000/users/${email}`);
+        await axios.delete(`https://replate-backend.vercel.app/users/${email}`);
         await fetchUsers();
         Swal.fire('Deleted!', 'User has been removed.', 'success');
       } catch (err) {

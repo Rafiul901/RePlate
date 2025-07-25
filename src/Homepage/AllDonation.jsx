@@ -15,7 +15,7 @@ const AllDonation = () => {
         if (searchTerm) params.append('search', searchTerm);
         if (sortBy && sortBy !== 'none') params.append('sort', sortBy);
 
-        const res = await fetch(`http://localhost:3000/donations/filtered?${params}`);
+        const res = await fetch(`https://replate-backend.vercel.app/donations/filtered?${params}`);
         const data = await res.json();
         setDonations(data);
       } catch (error) {

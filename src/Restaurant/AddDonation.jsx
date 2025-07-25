@@ -57,7 +57,7 @@ const AddDonation = () => {
       };
 
       // Send to backend
-      const backendRes = await fetch('http://localhost:3000/pending-donations', {
+      const backendRes = await fetch('https://replate-backend.vercel.app/pending-donations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(donationData)

@@ -23,7 +23,7 @@ const fetchTransactions = async () => {
 
   try {
     // Use this to fetch ALL transactions
-    const response = await fetch("http://localhost:3000/charity-role/transactions");
+    const response = await fetch("https://replate-backend.vercel.app/charity-role/transactions");
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
     const data = await response.json();

@@ -18,7 +18,7 @@ const CharityPickup = () => {
     setLoading(true);
     
     try {
-      const res = await fetch(`http://localhost:3000/pickups/${user.email}`);
+      const res = await fetch(`https://replate-backend.vercel.app/pickups/${user.email}`);
       console.log('📡 Response status:', res.status);
       
       if (!res.ok) throw new Error('Failed to fetch pickups');
@@ -45,7 +45,7 @@ const CharityPickup = () => {
     setConfirmingId(requestId);
     
     try {
-      const res = await fetch(`http://localhost:3000/pickups/${requestId}/confirm`, {
+      const res = await fetch(`https://replate-backend.vercel.app/pickups/${requestId}/confirm`, {
         method: 'PATCH',
       });
       

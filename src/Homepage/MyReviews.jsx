@@ -15,7 +15,7 @@ const MyReviews = () => {
 
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:3000/my-reviews/${user.email}`);
+      const res = await fetch(`https://replate-backend.vercel.app/my-reviews/${user.email}`);
       if (!res.ok) throw new Error('Failed to fetch reviews');
       const data = await res.json();
       setReviews(data);
@@ -45,7 +45,7 @@ const MyReviews = () => {
     if (!confirm.isConfirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
+      const res = await fetch(`https://replate-backend.vercel.app/reviews/${reviewId}`, {
         method: 'DELETE'
       });
 

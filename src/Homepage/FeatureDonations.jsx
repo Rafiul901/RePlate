@@ -8,7 +8,7 @@ const FeaturedDonations = () => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const res = await fetch('http://localhost:3000/donations/featured');
+        const res = await fetch('https://replate-backend.vercel.app/donations/featured');
         const data = await res.json();
         setFeaturedDonations(data);
       } catch (err) {
