@@ -15,7 +15,7 @@ RePlate is a full-stack web platform that connects restaurants with surplus food
 
 ## 🌐 Live Site
 
-[Visit RePlate Live 🌍]()
+[Visit RePlate Live 🌍](https://replate11.netlify.app/)
 
 ---
 
