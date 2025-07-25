@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 
 const FeatureDonation = () => {
   const [donations, setDonations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchVerifiedDonations();
@@ -15,6 +16,8 @@ const FeatureDonation = () => {
       setDonations(res.data);
     } catch (error) {
       console.error('Failed to fetch donations:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,10 +36,20 @@ const FeatureDonation = () => {
           position: 'top-end',
           showConfirmButton: false,
         });
-        fetchVerifiedDonations(); // refresh the list
+        fetchVerifiedDonations();
+      } else {
+        Swal.fire({
+          icon: 'info',
+          title: 'Already Featured',
+          toast: true,
+          timer: 2000,
+          position: 'top-end',
+          showConfirmButton: false,
+        });
       }
     } catch (error) {
       console.error('Error featuring donation:', error);
+      Swal.fire('Error', 'Failed to feature donation.', 'error');
     }
   };
 
@@ -58,7 +71,11 @@ const FeatureDonation = () => {
             {donations.map((donation) => (
               <tr key={donation._id} className="border-t">
                 <td className="px-4 py-2">
-                  <img src={donation.image} alt={donation.title} className="w-16 h-16 object-cover rounded" />
+                  <img
+                    src={donation.image}
+                    alt={donation.title}
+                    className="w-16 h-16 object-cover rounded"
+                  />
                 </td>
                 <td className="px-4 py-2">{donation.title}</td>
                 <td className="px-4 py-2">{donation.foodType}</td>
@@ -79,8 +96,10 @@ const FeatureDonation = () => {
             ))}
           </tbody>
         </table>
-        {donations.length === 0 && (
-          <p className="text-center p-4 text-gray-500">No verified donations found.</p>
+        {!loading && donations.length === 0 && (
+          <p className="text-center p-4 text-gray-500">
+            No verified donations found.
+          </p>
         )}
       </div>
     </div>

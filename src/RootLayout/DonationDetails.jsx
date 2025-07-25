@@ -162,6 +162,7 @@ const confirmRequest = async () => {
         requesterId,
         requesterName,
         charityEmail,
+        
         charityName,
         pickupTime: finalPickupTime,
         requestDescription: description,
