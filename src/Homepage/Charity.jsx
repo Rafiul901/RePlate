@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'https://replate-backend.vercel.app';
 
 const Charity = () => {
   const { user } = useContext(AuthContext);
