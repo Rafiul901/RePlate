@@ -104,15 +104,5 @@ RePlate is a full-stack web platform that connects restaurants with surplus food
 
 ---
 
-## 🤝 Contributing
 
-Pull requests are welcome! If you'd like to contribute, fork the repo and submit your PR. For major changes, please open an issue first to discuss what you'd like to change.
-
----
-
-## 📩 Contact
-
-For questions or feedback, email us at: `support@replate.com`
-
----
 
