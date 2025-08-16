@@ -55,10 +55,10 @@ const LatestCharityRequests = () => {
   }
 
   return (
-    <section className="py-12 px-4 bg-cyan-50">
+    <section className="py-12 px-4 ">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-green-900 mb-3">
             Recent Charity Requests
           </h2>
           <div className="w-20 h-1 bg-blue-500 mx-auto"></div>
@@ -124,9 +124,6 @@ const LatestCharityRequests = () => {
           ))}
         </motion.div>
 
-        <div className="text-center mt-12">
-        
-        </div>
       </div>
     </section>
   );

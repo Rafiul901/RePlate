@@ -73,9 +73,9 @@ const Impacts = () => {
   };
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-br from-green-50 to-emerald-100">
+    <section className="py-16 px-4 bg-gradient-to-br ">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-800">
+        <h2 className="text-4xl font-bold text-center mb-4  bg-clip-text bg-gradient-to-r from-green-600 to-emerald-800 text-green-900">
           Our Impact in Numbers
         </h2>
         <p className="text-lg text-center text-gray-600 mb-12 max-w-3xl mx-auto">

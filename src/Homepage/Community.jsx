@@ -33,9 +33,9 @@ const Community = () => {
   ];
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-br from-emerald-50 to-teal-100">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-800">
+    <section className="py-16 px-4 ">
+      <div className=" max-w-7xl mx-auto">
+        <h2 className="text-4xl font-bold text-center mb-4  bg-clip-text bg-gradient-to-r text-green-900">
           Community Success Stories
         </h2>
         <p className="text-lg text-center text-gray-600 mb-12 max-w-3xl mx-auto">
@@ -58,7 +58,7 @@ const Community = () => {
             {stories.map((story) => (
               <SwiperSlide key={story.id}>
                 <div className="h-full">
-                  <div className="bg-white rounded-2xl overflow-hidden shadow-xl h-full flex flex-col transform hover:scale-[1.02] transition-all duration-300">
+                  <div className="bg-white rounded-2xl overflow-hidden border-cyan-400 border-2 shadow-cyan-500 shadow-xl h-full flex flex-col mb-4 mx-3 my-3 transform hover:scale-[1.02] transition-all duration-300">
                     <div className="relative h-48 overflow-hidden">
                       <img 
                         src={story.image} 
@@ -91,9 +91,7 @@ const Community = () => {
           <div className="swiper-pagination !bottom-0"></div>
         </div>
 
-        <div className="mt-12 text-center">
-         
-        </div>
+     
       </div>
     </section>
   );
