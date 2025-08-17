@@ -26,7 +26,7 @@ const Footer = () => {
             <nav>
                 <h6 className="footer-title">Social</h6>
                 <div className="grid grid-flow-col gap-4">
-                    <a href="https://www.facebook.com/rmamit.tajib" target="_blank" rel="noopener noreferrer" >
+                    <a href="https://www.facebook.com/rafiul.dipu" target="_blank" rel="noopener noreferrer" >
                         <img className="w-8 rounded-full border-white border-2" src={fb} alt="Facebook" />
                     </a>
                     <a href="https://x.com/Curious093270" target="_blank" rel="noopener noreferrer">
