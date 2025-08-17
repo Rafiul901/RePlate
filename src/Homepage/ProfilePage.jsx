@@ -14,12 +14,12 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
-    // Simulate loading user data
+   
     const timer = setTimeout(() => {
       setProfile({
         name: user?.displayName || 'Name',
         image: user?.photoURL || 'https://via.placeholder.com/150',
-        role: 'User', // or 'user'
+        role: 'User', 
         email: user?.email || 'user@example.com',
         joinDate: 'January 2023'
       });
