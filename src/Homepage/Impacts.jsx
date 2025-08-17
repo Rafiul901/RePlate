@@ -41,8 +41,8 @@ const Impacts = () => {
   ];
 
   useEffect(() => {
-    const duration = 5000; // Animation duration in ms
-    const increment = 50; // How often to update in ms
+    const duration = 5000; 
+    const increment = 50; 
     
     stats.forEach(stat => {
       const step = (stat.target / (duration / increment));
