@@ -20,8 +20,6 @@ RePlate is a full-stack web platform that connects restaurants with surplus food
 - **Password:** 1234Bb  
 
 
-> 🔒 Note: Please change admin credentials in production!
-
 ---
 
 ## 🌐 Live Site
