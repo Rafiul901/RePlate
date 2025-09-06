@@ -4,10 +4,22 @@ RePlate is a full-stack web platform that connects restaurants with surplus food
 
 ---
 
-## 🔑 Admin Credentials (For Demo Purposes)
+## 🔑 Credentials (For Demo Purposes)
 
-- **Username:** flame@fire.com  
-- **Password:** 1234Aa
+## 🔑 Test Accounts
+
+### 👨‍💻 Admin  
+- **Email:** flame@fire.com  
+- **Password:** 1234Aa  
+
+### 🏢 Restaurant  
+- **Email:** rafiq@1.com  
+- **Password:** 1234Cc  
+
+### 🎗️ Charity  
+- **Email:** lawliet@1.com  
+- **Password:** 1234Bb  
+
 
 > 🔒 Note: Please change admin credentials in production!
 
