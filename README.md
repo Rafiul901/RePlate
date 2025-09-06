@@ -6,7 +6,6 @@ RePlate is a full-stack web platform that connects restaurants with surplus food
 
 ## 🔑 Credentials (For Demo Purposes)
 
-## 🔑 Test Accounts
 
 ### 👨‍💻 Admin  
 - **Email:** flame@fire.com  
